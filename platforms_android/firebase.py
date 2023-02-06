@@ -9,7 +9,7 @@ def enable_verbose_logging():
     """Enable verbose logging mode.
 
     Returns:
-        proc (Popen): Instances of the Popen class. 
+        proc (Popen): Instance of the Popen class. 
     """
     try:
         #subprocess.run("adb shell setprop log.tag.FA VERBOSE".split(" "))
@@ -38,7 +38,7 @@ def edit_log(log: str):
     return log
 
 
-def without_arguments():
+def no_arguments():
     """Displays logs of events being logged. 
     """
     proc = enable_verbose_logging()
@@ -68,7 +68,7 @@ def with_arguments(args: argparse.Namespace):
         args (argparse.Namespace): Arguments passed by the user in the call to execute the script.
     """
     if args.term1 == None and args.term2 == None: # Only -v exists in the call
-        without_arguments()
+        no_arguments()
 
     elif args.term1 != None and args.term2 != None:
         proc = enable_verbose_logging()

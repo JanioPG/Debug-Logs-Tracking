@@ -1,7 +1,5 @@
 test/
 */__pycache__/
-platforms_ios/
-ios_debug_logs.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

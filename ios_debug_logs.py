@@ -1,6 +1,6 @@
 import sys
 import argparse
-from platforms_android import firebase, univesal_analytics, appsflyer, gtm
+from platforms_ios import firebase_ios, universal_analytics_ios
 from interface import title, options, clear_screen, verbose_custom
 
 
@@ -18,7 +18,7 @@ def receive_arguments():
     return parser.parse_args()
 
 
-def user_choice(verbose: bool = False):
+def user_choice(verbose: bool):
     """It displays the platforms (options) and receives the user's choice.
 
     Args:
@@ -27,52 +27,58 @@ def user_choice(verbose: bool = False):
     Returns:
         action (str): Index related to the platform option chosen by the user.
     """
-    platforms = ["Firebase/GA4", "GA Universal", "AppsFlyer", "Google Tag Manager", "Quit"]
+    platforms = ["Firebase/GA4", "GA Universal", "Quit"] # remember to add "AppsFlyer" and "Google Tag Manager".
     action = ""
     msg = ""
 
-    while action not in ["0", "1", "2", "3", "4"]:
+    while action not in ["0", "1", "2"]:
         clear_screen()
-        title("Debug Logs - Android")
+        title("Debug Logs - iOS")
         if verbose:
             verbose_custom()
         options(platforms, msg)
 
         action = input(str("Option: ")).strip()
-        msg = "\033[31mInvalid option. Choose between 0, 1, 2, 3 or 4.\033[m"
+        msg = "\033[31mInvalid option. Choose between 0, 1 or 2.\033[m"
         
     return action
 
 
 if __name__ == "__main__":
     args = receive_arguments()
-    action = user_choice(True) if args.verbose else user_choice()
+    description = False
+    
+    if args.verbose:
+            description = True
 
+    action = user_choice(description)
+    
     if (len(sys.argv) == 1):
         if action == "0":
-            firebase.no_arguments()
+            firebase_ios.get_event_log(number_arguments=0)
         elif action == "1":
-            univesal_analytics.no_arguments()
-        # options without filter
+            universal_analytics_ios.no_arguments()
         elif action == "2":
-            appsflyer.appsFlyer()
-        elif action == "3":
-            gtm.main()
-        elif action == "4":
             pass
-    
+        # Add AppsFlyer and GTM.
     else:
         if action == "0":
-            firebase.with_arguments(args)
+            if args.term1 == None and args.term2 == None: # Only -v exists in the call
+                firebase_ios.get_event_log(number_arguments=0)
+
+            elif args.term1 != None and args.term2 != None:
+                firebase_ios.get_event_log(number_arguments=2, term1=args.term1, term2=args.term2)
+
+            elif args.term1 != None or args.term2 != None:
+                term = args.term1 if args.term1 != None else args.term2
+                firebase_ios.get_event_log(number_arguments=1, term1=term)
+
         elif action == "1":
-            univesal_analytics.with_arguments(args)
-        # options without filter
+            universal_analytics_ios.with_arguments(args)
         elif action == "2":
-            appsflyer.appsFlyer()
-        elif action == "3":
-            gtm.main()
-        elif action == "4":
             pass
+
+        # Add AppsFlyer and GTM.
     
     print("\033[1;32mFinished.\033[m")
     sys.exit(0)
