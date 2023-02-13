@@ -15,7 +15,7 @@ def enable_verbose_logging():
     """
     try:
         subprocess.run("adb shell setprop log.tag.GAv4-SVC DEBUG".split(" "))
-        proc = subprocess.Popen("adb logcat -s GAv4-SVC".split(" "), stdout=subprocess.PIPE)
+        proc = subprocess.Popen("adb logcat -v time -s GAv4-SVC".split(" "), stdout=subprocess.PIPE)
     except:
         print(f"Oops. There was an error. Make sure 'adb' is installed.")
         sys.exit(1)
