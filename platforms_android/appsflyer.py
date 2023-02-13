@@ -1,7 +1,6 @@
 import io
 import re
 import subprocess
-import json
 
 
 def appsFlyer():

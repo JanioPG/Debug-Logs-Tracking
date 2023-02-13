@@ -2,7 +2,7 @@ import io
 import re
 import subprocess
 import sys
-import argparse
+
 
 def enable_verbose_logging():
     """Enable simulator or device debug logs.

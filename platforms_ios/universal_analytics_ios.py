@@ -4,6 +4,7 @@ import subprocess
 import sys
 import argparse
 
+
 def enable_verbose_logging():
     """Ativa o modo log detalhado.
 
